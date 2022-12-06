@@ -1,0 +1,236 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using ClassLibrary1;
+
+namespace Top_100_Liked_Questions
+{
+    internal class Easy
+    {
+
+        public void Run()
+        {
+            //var nums = new int[] {2, 7, 11, 15 };
+            //var target = 9;
+            //var result = TwoSum2(nums, target);
+
+            //var s = "([)]";
+            //IsValid(s);
+
+            //ListNode three = new() { val = 4 };
+            //ListNode two = new() { next = three, val = 2 };
+            //ListNode one = new() { next = two, val = 1 };
+
+            //ListNode six = new() { val = 4 };
+            //ListNode five = new() { next = six, val = 3 };
+            //ListNode four = new() { next = five, val = 1 };
+
+            //MergeTwoLists1(one, four);
+            //var node = MergeTwoLists2(one, four);
+            //var index = SearchInsert(new int[] { 3, 4, 5, 6 }, 1);
+
+            var a = ClimbStairs3(6);
+        }
+
+        //70. Climbing Stairs
+
+        //Array
+        public int ClimbStairs3(int n)
+        {
+            if (n <= 2)
+                return n;
+
+            int[] nums = new int[n + 1];
+
+            nums[1] = 1;
+            nums[2] = 2;
+
+            for (int i = 3; i <= n; i++)
+            {
+                nums[i] = nums[i - 1] + nums[i - 2];
+            }
+
+            return nums[n];
+        }
+
+        //Iterative 25 38
+        public int ClimbStairs2(int n)
+        {
+            if (n <= 2)
+                return n;
+            int n1 = 1, n2 = 2;
+            int result = 0;
+
+            for (int i = 3; i <= n; i++)
+            {
+                result = n1 + n2;
+                n1 = n2;
+                n2 = result;
+            }
+
+            return result;
+        }
+
+        //Recursive Time out
+        public int ClimbStairs1(int n)
+        {
+            if (n <= 2)
+                return n;
+            return ClimbStairs1(n - 1) + ClimbStairs1(n - 2);
+        }
+
+        //35. Search Insert Position
+        //53 48
+        public int SearchInsert(int[] nums, int target)
+        {
+            var min = 0;
+            var max = nums.Length - 1;
+            while (min <= max)
+            {
+                var mid = (min + max) / 2;
+                if (nums[mid] == target)
+                    return mid;
+
+                if (nums[mid] > target)
+                {
+                    max = mid - 1;
+                }
+                else
+                {
+                    min = mid + 1;
+                }
+
+            }
+            return min;
+        }
+
+        // 21. Merge Two Sorted Lists
+
+        // Recursive 19 34
+        public ListNode MergeTwoLists2(ListNode list1, ListNode list2)
+        {
+            if (list1 == null)
+                return list2;
+            if (list2 == null)
+                return list1;
+
+            if (list1.val < list2.val)
+            {
+                list1.next = MergeTwoLists2(list1.next, list2);
+                return list1;
+            }
+            else
+            {
+                list2.next = MergeTwoLists2(list2.next, list1);
+                return list2;
+            }
+
+        }
+
+        // Iterative 86 9
+        public ListNode MergeTwoLists1(ListNode list1, ListNode list2)
+        {
+            if (list1 == null) return list2;
+            if (list2 == null) return list1;
+
+            ListNode head = new(), move = head;
+
+            while (list1 != null && list2 != null)
+            {
+                if (list1.val < list2.val)
+                {
+                    move.next = list1;
+                    list1 = list1.next;
+                }
+                else
+                {
+                    move.next = list2;
+                    list2 = list2.next;
+                }
+                move = move.next;
+            }
+
+            if (list1 != null)
+            {
+                move.next = list1;
+            }
+
+            if (list2 != null)
+            {
+                move.next = list2;
+            }
+
+            return head.next;
+        }
+
+        //20. Valid Parentheses
+        public bool IsValid(string s)
+        {
+            if (s.Length % 2 != 0) return false;
+
+            Stack<char> stack = new Stack<char>();
+
+            foreach (var c in s)
+            {
+                if (c == '(')
+                {
+                    stack.Push(')');
+                }
+                else if (c == '[')
+                {
+                    stack.Push(']');
+                }
+                else if (c == '{')
+                {
+                    stack.Push('}');
+                }
+                else if (stack.Count == 0 || stack.Pop() != c)
+                {
+                    return false;
+                }
+            }
+
+            return stack.Count == 0;
+        }
+
+        //1. Two Sum
+        // 81 42
+        public int[] TwoSum2(int[] nums, int target)
+        {
+            var dic = new Dictionary<int, int>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                var left = nums[i];
+                var right = target - nums[i];
+                if (dic.ContainsKey(right))
+                {
+                    return new int[] { dic[right], i };
+                }
+                else
+                {
+                    dic[left] = i;
+                }
+            }
+
+            return Array.Empty<int>();
+        }
+        // 40 95
+        public int[] TwoSum1(int[] nums, int target)
+        {
+            for (int i = 0; i < nums.Length - 1; i++)
+            {
+                for (int j = i + 1; j < nums.Length; j++)
+                {
+                    if (nums[i] + nums[j] == target)
+                    {
+                        return new int[] { i, j };
+                    }
+                }
+            }
+            return new int[2];
+        }
+    }
+}

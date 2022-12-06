@@ -1,31 +1,19 @@
-﻿namespace Top_100_Liked_Questions
+﻿using System.Runtime.CompilerServices;
+
+namespace Top_100_Liked_Questions
 {
     internal class Program
     {
         static void Main()
         {
+            Easy easy = new();
+            Medium medium = new();
+            Hard hard = new();
 
-        }
-        //20. Valid Parentheses
-        public bool IsValid(string s)
-        {
-
+            easy.Run();
+            medium.Run();
+            hard.Run();
         }
 
-        //1. Two Sum
-        public int[] TwoSum(int[] nums, int target)
-        {
-            for (int i = 0; i < nums.Length - 1; i++)
-            {
-                for (int j = i + 1; j < nums.Length; j++)
-                {
-                    if (nums[i] + nums[j] == target)
-                    {
-                        return new int[] { i, j };
-                    }
-                }
-            }
-            return new int[2];
-        }
     }
 }
