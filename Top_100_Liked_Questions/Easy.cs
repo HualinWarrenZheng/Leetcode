@@ -35,18 +35,99 @@ namespace Top_100_Liked_Questions
 
             //var a = ClimbStairs3(6);
 
-            Iterative iterative = new();
-            iterative.Print(TreeNode.Example1);
+            //Iterative iterative = new();
+            //iterative.Print(TreeNode.Example1);
 
             //var result = InorderTraversal1(TreeNode.Example1);
             //PrintList.PrintOut(result);
 
             //var result2 = InorderTraversal2(TreeNode.Example1);
             //PrintList.PrintOut(result2);
+
+            //var result = IsSymmetric2(TreeNode.Example3);
+
+        }
+        //104. Maximum Depth of Binary Tree
+        public int MaxDepth_BFS(TreeNode root)
+        {
+        }
+        public int MaxDepth_DFS(TreeNode root)
+        {
+            if (root == null)
+            {
+                return 0;
+            }
+            int left = MaxDepth_DFS(root.left);
+            int right = MaxDepth_DFS(root.right);
+            return Math.Max(left, right) + 1;
+        }
+
+        //101. Symmetric Tree
+        //45 56
+        public bool IsSymmetric2(TreeNode root)
+        {
+            var queue = new Queue<TreeNode>();
+            queue.Enqueue(root.left);
+            queue.Enqueue(root.right);
+            while (queue.Count > 0)
+            {
+                var left = queue.Dequeue();
+                var right = queue.Dequeue();
+                if (left == null && right == null)
+                {
+                    continue;
+                }
+                if (left == null || right == null)
+                {
+                    return false;
+                }
+                if (left.val != right.val)
+                {
+                    return false;
+                }
+                queue.Enqueue(left.left);
+                queue.Enqueue(right.right);
+                queue.Enqueue(left.right);
+                queue.Enqueue(right.left);
+
+            }
+            return true;
+        }
+        //recurrsive
+        public bool IsSymmetric1(TreeNode root)
+        {
+            return root == null || IsSymmetricHelper(root.left, root.right);
+        }
+
+        public bool IsSymmetricHelper(TreeNode left, TreeNode right)
+        {
+            #region Opotion 1
+            //if (left == null && right == null)
+            //{
+            //    return true;
+            //}
+
+            //if (left == null || left == null)
+            //{
+            //    return false;
+            //}
+            #endregion
+            #region option 2
+            if (left == null || left == null)
+            {
+                return left == right;
+            }
+            #endregion
+
+            if (left.val != right.val)
+            {
+                return false;
+            }
+            return IsSymmetricHelper(left.left, right.right) && IsSymmetricHelper(left.right, right.left);
         }
 
         //94. Binary Tree Inorder Traversal (Left -> Root -> Right)
-        //Iterative
+        //Iterative 91 8
         public IList<int> InorderTraversal2(TreeNode root)
         {
             var list = new List<int>();
