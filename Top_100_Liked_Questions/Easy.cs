@@ -51,14 +51,14 @@ namespace Top_100_Liked_Questions
         public int MaxDepth_BFS(TreeNode root)
         {
         }
-        public int MaxDepth_DFS(TreeNode root)
+        public int MaxDepth_DFS_Recursive(TreeNode root)
         {
             if (root == null)
             {
                 return 0;
             }
-            int left = MaxDepth_DFS(root.left);
-            int right = MaxDepth_DFS(root.right);
+            int left = MaxDepth_DFS_Recursive(root.left);
+            int right = MaxDepth_DFS_Recursive(root.right);
             return Math.Max(left, right) + 1;
         }
 
