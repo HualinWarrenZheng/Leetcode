@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using ClassLibrary1;
+using ClassLibrary1.DataStructure;
+using ClassLibrary1.Print;
 
 namespace Top_100_Liked_Questions
 {
@@ -32,12 +33,56 @@ namespace Top_100_Liked_Questions
             //var node = MergeTwoLists2(one, four);
             //var index = SearchInsert(new int[] { 3, 4, 5, 6 }, 1);
 
-            var a = ClimbStairs3(6);
+            //var a = ClimbStairs3(6);
+
+            Iterative iterative = new();
+            iterative.Print(TreeNode.Example1);
+
+            //var result = InorderTraversal1(TreeNode.Example1);
+            //PrintList.PrintOut(result);
+
+            //var result2 = InorderTraversal2(TreeNode.Example1);
+            //PrintList.PrintOut(result2);
         }
 
-        //70. Climbing Stairs
+        //94. Binary Tree Inorder Traversal (Left -> Root -> Right)
+        //Iterative
+        public IList<int> InorderTraversal2(TreeNode root)
+        {
+            var list = new List<int>();
+            var stack = new Stack<TreeNode>();
+            while (stack.Count > 0 || root != null)
+            {
+                while (root != null)
+                {
+                    stack.Push(root);
+                    root = root.left;
+                }
+                root = stack.Pop();
+                list.Add(root.val);
+                root = root.right;
+            }
+            return list;
+        }
 
-        //Array
+        //Recursive 
+        public IList<int> InorderTraversal1(TreeNode root)
+        {
+            var list = new List<int>();
+            helper(root, list);
+            return list;
+        }
+        void helper(TreeNode root, List<int> list)
+        {
+            if (root != null)
+            {
+                helper(root.left, list);
+                list.Add(root.val);
+                helper(root.right, list);
+            }
+        }
+        //70. Climbing Stairs
+        //Array 65 38
         public int ClimbStairs3(int n)
         {
             if (n <= 2)
