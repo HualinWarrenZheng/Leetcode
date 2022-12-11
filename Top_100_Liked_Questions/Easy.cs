@@ -40,6 +40,90 @@ namespace Top_100_Liked_Questions
             //var result = IsSymmetric2(TreeNode.Example3);
             //Generate(5);
         }
+        //160. Intersection of Two Linked Lists
+        // 83 20
+        public ListNode GetIntersectionNode(ListNode headA, ListNode headB)
+        {
+            Dictionary<ListNode, ListNode> dic = new();
+            while (headA != null)
+            {
+                if (headA.next != null)
+                {
+                    dic.Add(headA, headA.next);
+                    headA = headA.next;
+                }
+                else
+                {
+                    dic.Add(headA, null);
+                    break;
+                }
+            }
+
+            while (headB != null)
+            {
+                if (dic.ContainsKey(headB))
+                {
+                    return headB;
+                }
+                else
+                {
+                    if (headB.next != null)
+                    {
+                        dic.Add(headB, headB.next);
+                        headB = headB.next;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            return null;
+        }
+        //141. Linked List Cycle
+        //Floyd’s Cycle-Finding Algorithm 71 49
+        public bool HasCycle2(ListNode head)
+        {
+            if (head == null) return false;
+            var slow = head;
+            var fast = head.next;
+
+            while (slow != fast)
+            {
+                if (fast.next == null || fast == null)
+                {
+                    return false;
+                }
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+
+            return true;
+        }
+        //66 7
+        public bool HasCycle(ListNode head)
+        {
+            if (head == null)
+            {
+                return false;
+            }
+            Dictionary<ListNode, ListNode> dic = new();
+            while (true)
+            {
+                if (head.next == null)
+                {
+                    break;
+                }
+                dic.Add(head, head.next);
+                head = head.next;
+                if (dic.ContainsKey(head))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         //136. Single Number
         //
         public int SingleNumber2(int[] nums)
