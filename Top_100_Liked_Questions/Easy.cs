@@ -41,6 +41,24 @@ namespace Top_100_Liked_Questions
             //Generate(5);
         }
         //160. Intersection of Two Linked Lists
+        // 51 62
+        public ListNode GetIntersectionNode2(ListNode headA, ListNode headB)
+        {
+            if (headA == null || headB == null)
+            {
+                return null;
+            }
+            var a = headA;
+            var b = headB;
+
+            while (a != b)
+            {
+                a = a == null ? headB : a.next;
+                b = b == null ? headA : b.next;
+            }
+
+            return a;
+        }
         // 83 20
         public ListNode GetIntersectionNode(ListNode headA, ListNode headB)
         {
