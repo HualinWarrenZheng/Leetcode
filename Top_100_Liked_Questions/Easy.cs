@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using ClassLibrary1.DataStructure;
-using ClassLibrary1.Print;
+﻿using ClassLibrary1.DataStructure;
 
 namespace Top_100_Liked_Questions
 {
@@ -45,12 +38,249 @@ namespace Top_100_Liked_Questions
             //PrintList.PrintOut(result2);
 
             //var result = IsSymmetric2(TreeNode.Example3);
+            //Generate(5);
+        }
+        //136. Single Number
+        //
+        public int SingleNumber2(int[] nums)
+        {
+            int a = 0;
+            foreach (var n in nums)
+                a ^= n;
+            return a;
+        }
+        //13 35
+        public int SingleNumber(int[] nums)
+        {
+            List<int> list = new List<int>();
+            foreach (var num in nums)
+            {
+                if (!list.Contains(num))
+                {
+                    list.Add(num);
+                }
+                else
+                {
+                    list.Remove(num);
+                }
+            }
+            return list[0];
+        }
+        //121. Best Time to Buy and Sell Stock
+        //56 100
+        public int MaxProfit2(int[] prices)
+        {
+            var min = int.MaxValue;
+            var profit = 0;
 
+            for (int i = 0; i < prices.Length; i++)
+            {
+                if (prices[i] < min)
+                {
+                    min = prices[i];
+                }
+                if (prices[i] - min > profit)
+                {
+                    profit = prices[i] - min;
+                }
+            }
+            return profit;
+        }
+        // Time Limit Exceeded
+        public int MaxProfit(int[] prices)
+        {
+            if (prices.Length == 1)
+            {
+                return 0;
+            }
+            var profit = 0;
+            for (int i = 0; i < prices.Length - 1; i++)
+            {
+                var diff = 0;
+                for (int j = i; j < prices.Length; j++)
+                {
+                    if (prices[j] - prices[i] > diff)
+                    {
+                        diff = prices[j] - prices[i];
+                    }
+                }
+                if (diff > profit)
+                {
+                    profit = diff;
+                }
+            }
+
+            return profit;
+        }
+        //118. Pascal's Triangle
+        // 57 100
+        public IList<IList<int>> Generate3(int numRows)
+        {
+            var rows = new int[numRows][];
+            for (int i = 0; i < numRows; i++)
+            {
+                rows[i] = new int[i + 1];
+                rows[i][0] = rows[i][i] = 1;
+                for (int j = 1; j < i; j++)
+                {
+                    rows[i][j] = rows[i - 1][j] + rows[i - 1][j - 1];
+                }
+            }
+            return rows;
+        }
+        //5 68
+        public IList<IList<int>> Generate2(int numRows)
+        {
+            IList<IList<int>> list = new List<IList<int>>();
+            List<int> list1 = new() { 1 };
+            list.Add(list1);
+            for (int i = 1; i < numRows; i++)
+            {
+                List<int> newList = new();
+                newList.Add(1);
+                for (int j = 1; j < list1.Count(); j++)
+                {
+                    newList.Add(list1[j] + list1[j - 1]);
+                }
+                newList.Add(1);
+
+                list.Add(newList);
+                list1 = newList;
+            }
+            return list;
+        }
+        //33 38
+        public IList<IList<int>> Generate(int numRows)
+        {
+            IList<IList<int>> list = new List<IList<int>>();
+            List<int> list1 = new() { 1 };
+            list.Add(list1);
+            for (int i = 1; i < numRows; i++)
+            {
+                var newList = Helper(list1);
+                list.Add(newList);
+                list1 = newList;
+            }
+            return list;
+        }
+        List<int> Helper(List<int> pre)
+        {
+            List<int> cur = new();
+            var length = pre.Count();
+            cur.Add(1);
+            for (int i = 1; i < length; i++)
+            {
+                cur.Add(pre[i] + pre[i - 1]);
+            }
+            cur.Add(1);
+            return cur;
+        }
+
+        //108. Convert Sorted Array to Binary Search Tree
+        // 8 36
+        public TreeNode SortedArrayToBST2(int[] nums)
+        {
+            return Helper(nums, 0, nums.Length - 1);
+            TreeNode Helper(int[] nums, int left, int right)
+            {
+                if (left > right)
+                {
+                    return null;
+                }
+                var mid = (left + right) / 2;
+                var node = new TreeNode(nums[mid])
+                {
+                    left = Helper(nums, left, mid - 1),
+                    right = Helper(nums, mid + 1, right)
+                };
+                return node;
+            }
+        }
+
+
+        // 99 7
+        public TreeNode SortedArrayToBST1(int[] nums)
+        {
+            var length = nums.Length;
+            var mid = nums.Length / 2;
+
+            if (length == 0)
+            {
+                return null;
+            }
+            if (length == 1)
+            {
+                return new TreeNode(nums[0]);
+            }
+
+            return new TreeNode(nums[mid], SortedArrayToBST1(nums.Take(mid).ToArray()), SortedArrayToBST1(nums.TakeLast(length - mid - 1).ToArray()));
         }
         //104. Maximum Depth of Binary Tree
-        public int MaxDepth_BFS(TreeNode root)
+        //Use Queue 73 26
+        public int MaxDepth_BFS_Iterative2(TreeNode root)
         {
+            if (root == null)
+            {
+                return 0;
+            }
+            var queue = new Queue<TreeNode>();
+            TreeNode temp;
+            var level = 0;
+            queue.Enqueue(root);
+
+            while (queue.Count > 0)
+            {
+                level++;
+                var count = queue.Count();
+                while (count-- > 0)
+                {
+                    temp = queue.Dequeue();
+                    if (temp.left != null)
+                    {
+                        queue.Enqueue(temp.left);
+                    }
+                    if (temp.right != null)
+                    {
+                        queue.Enqueue(temp.right);
+                    }
+                }
+
+            }
+
+            return level;
         }
+        //56 26
+        public int MaxDepth_BFS_Iterative1(TreeNode root)
+        {
+            if (root == null)
+            {
+                return 0;
+            }
+            var list = new List<TreeNode>();
+            var level = 0;
+            list.Add(root);
+
+            while (list.Count > 0)
+            {
+                level++;
+                var newList = new List<TreeNode>();
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].left != null)
+                    {
+                        newList.Add(list[i].left);
+                    }
+                    if (list[i].right != null)
+                    {
+                        newList.Add(list[i].right);
+                    }
+                }
+                list = newList;
+            }
+
+            return level;
+        }
+        // 65 60
         public int MaxDepth_DFS_Recursive(TreeNode root)
         {
             if (root == null)
