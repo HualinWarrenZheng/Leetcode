@@ -43,6 +43,22 @@ namespace Top_100_Liked_Questions
             ReverseList(ListNode.Example1);
         }
 
+        //283. Move Zeroes
+        public void MoveZeroes(int[] nums)
+        {
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] == 0)
+                {
+                    for (int j = i; j < nums.Length - 1; j++)
+                    {
+                        nums[j] = nums[j + 1];
+                    }
+                    nums[^1] = 0;
+                }
+            }
+        }
+
         //234. Palindrome Linked List
         //92 30
         public bool IsPalindrome(ListNode head)
