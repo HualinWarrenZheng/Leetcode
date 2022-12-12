@@ -44,17 +44,43 @@ namespace Top_100_Liked_Questions
         }
 
         //283. Move Zeroes
-        public void MoveZeroes(int[] nums)
+        //32 92
+        public void MoveZeroes2(int[] nums)
         {
+            var count = 0;
             for (int i = 0; i < nums.Length; i++)
             {
                 if (nums[i] == 0)
                 {
+                    count++;
+                }
+                else if (count > 0)
+                {
+                    var t = nums[i];
+                    nums[i] = 0;
+                    nums[i - count] = t;
+                }
+            }
+        }
+        // 8 38
+        public void MoveZeroes(int[] nums)
+        {
+            var count = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (count + i == nums.Length - 1)
+                {
+                    break;
+                }
+                if (nums[i] == 0)
+                {
+                    count++;
                     for (int j = i; j < nums.Length - 1; j++)
                     {
                         nums[j] = nums[j + 1];
                     }
                     nums[^1] = 0;
+                    i = i - 1;
                 }
             }
         }
