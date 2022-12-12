@@ -42,6 +42,114 @@ namespace Top_100_Liked_Questions
 
             ReverseList(ListNode.Example1);
         }
+
+        //234. Palindrome Linked List
+        //92 30
+        public bool IsPalindrome(ListNode head)
+        {
+            var s = head;
+            var f = head;
+            ListNode pre = null;
+
+            while (f != null && f.next != null)
+            {
+                f = f.next.next;
+                //reverse the first half of the node list
+                var temp = s.next;
+                s.next = pre;
+                pre = s;
+                s = temp;
+            }
+
+            // if the legth of node list is odd, s = s.next
+            s = f == null ? s : s.next;
+
+            //compare s(second half) with pre(first half)
+            while (s != null)
+            {
+                if (s.val != pre.val)
+                {
+                    return false;
+                }
+                s = s.next;
+                pre = pre.next;
+            }
+
+            return true;
+        }
+        //226. Invert Binary Tree
+        // 90 7
+        public TreeNode InvertTree_Iterative_BFS(TreeNode root)
+        {
+            if (root == null)
+            {
+                return null;
+            }
+            Queue<TreeNode> q = new();
+            q.Enqueue(root);
+            TreeNode node = root;
+            while (q.Count > 0)
+            {
+                node = q.Dequeue();
+                var temp = node.left;
+                node.left = node.right;
+                node.right = temp;
+                if (node.left != null)
+                {
+                    q.Enqueue(node.left);
+                }
+                if (node.right != null)
+                {
+                    q.Enqueue(node.right);
+                }
+            }
+            return root;
+        }
+        // 68 68
+        public TreeNode InvertTree_Iterative_DFS(TreeNode root)
+        {
+            if (root == null)
+            {
+                return null;
+            }
+            Stack<TreeNode> stack = new Stack<TreeNode>();
+            stack.Push(root);
+            TreeNode node = root;
+            while (stack.Count > 0)
+            {
+                node = stack.Pop();
+                var temp = node.left;
+                node.left = node.right;
+                node.right = temp;
+                if (node.left != null)
+                {
+                    stack.Push(node.left);
+                }
+                if (node.right != null)
+                {
+                    stack.Push(node.right);
+                }
+            }
+            return root;
+        }
+        // 16 29
+        public TreeNode InvertTree(TreeNode root)
+        {
+            Helper(root);
+            return root;
+            void Helper(TreeNode root)
+            {
+                if (root == null)
+                {
+                    return;
+                }
+                var temp = root.left;
+                root.left = root.right;
+                root.right = temp;
+                Helper(root.left);
+                Helper(root.right);
+            }
+        }
         // 206. Reverse Linked List
         // 5 85
         public ListNode ReverseList_Recursive(ListNode head)
