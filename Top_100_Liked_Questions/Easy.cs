@@ -39,7 +39,114 @@ namespace Top_100_Liked_Questions
 
             //var result = IsSymmetric2(TreeNode.Example3);
             //Generate(5);
+
+            ReverseList(ListNode.Example1);
         }
+        // 206. Reverse Linked List
+        // 5 85
+        public ListNode ReverseList_Recursive(ListNode head)
+        {
+            return Helper(head, null);
+            ListNode Helper(ListNode head, ListNode left)
+            {
+                if (head == null)
+                {
+                    return left;
+                }
+                var right = head.next;
+                head.next = left;
+                return Helper(right, head);
+            }
+
+        }
+        // 81 14
+        public ListNode ReverseList2(ListNode head)
+        {
+            ListNode newHead = null;
+            while (head != null)
+            {
+                var right = head.next;
+                right.next = newHead;
+                newHead = head;
+                head = head.next;
+            }
+            return newHead;
+
+        }
+        // 52 49
+        public ListNode ReverseList(ListNode head)
+        {
+            if (head == null || head.next == null)
+            {
+                return head;
+            }
+            ListNode root, temp;
+            Stack<ListNode> stack = new Stack<ListNode>();
+            while (head != null)
+            {
+                stack.Push(head);
+                head = head.next;
+            }
+            root = stack.Pop();
+            temp = root;
+            while (stack.Count > 0)
+            {
+                temp.next = stack.Pop();
+                temp = temp.next;
+                if (stack.Count == 0)
+                {
+                    temp.next = null;
+                }
+            }
+            return root;
+
+        }
+        //169. Majority Element
+        //99 6
+        public int MajorityElement2(int[] nums)
+        {
+            var majority = nums[0];
+            var count = 1;
+            for (int i = 1; i < nums.Length; i++)
+            {
+                if (nums[i] == majority)
+                {
+                    count++;
+                }
+                else
+                {
+                    count--;
+                }
+                if (count == 0)
+                {
+                    majority = nums[i];
+                    count = 1;
+                }
+            }
+            return majority;
+        }
+        // 94 15
+        public int MajorityElement(int[] nums)
+        {
+            Dictionary<int, int> dic = new Dictionary<int, int>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (!dic.ContainsKey(nums[i]))
+                {
+                    dic[nums[i]] = 1;
+                }
+                else
+                {
+                    dic[nums[i]]++;
+                }
+                if (dic[nums[i]] > nums.Length / 2)
+                {
+                    return nums[i];
+                }
+            }
+            return 0;
+        }
+
         //160. Intersection of Two Linked Lists
         // 51 62
         public ListNode GetIntersectionNode2(ListNode headA, ListNode headB)
