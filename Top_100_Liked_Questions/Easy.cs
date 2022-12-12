@@ -40,7 +40,31 @@ namespace Top_100_Liked_Questions
             //var result = IsSymmetric2(TreeNode.Example3);
             //Generate(5);
 
-            ReverseList(ListNode.Example1);
+            //ReverseList(ListNode.Example1);
+            DiameterOfBinaryTree(TreeNode.Example1);
+        }
+
+        //543. Diameter of Binary Tree
+        // 70 77
+        public int DiameterOfBinaryTree(TreeNode root)
+        {
+            int max = 0;
+            Helper(root, ref max);
+            return max;
+            int Helper(TreeNode root, ref int max)
+            {
+                if (root == null)
+                {
+                    return 0;
+                }
+
+                var left = Helper(root.left, ref max);
+                var right = Helper(root.right, ref max);
+
+                max = Math.Max(max, left + right);
+
+                return Math.Max(left, right) + 1;
+            }
         }
 
         //283. Move Zeroes
