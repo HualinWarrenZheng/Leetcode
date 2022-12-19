@@ -1,4 +1,7 @@
-﻿using ClassLibrary1.DataStructure;
+﻿using System.Collections;
+using System.Globalization;
+
+using ClassLibrary1.DataStructure;
 
 namespace Top_100_Liked_Questions
 {
@@ -9,9 +12,147 @@ namespace Top_100_Liked_Questions
             //AddTwoNumbers(ListNode.Example1, ListNode.Example2);
             //LengthOfLongestSubstring("pwwkew");
             //var result = LongestPalindrome("2123321");
-            ThreeSum(new int[] { -1, 0, 1, 2, -1, -4 });
+            //ThreeSum(new int[] { -1, 0, 1, 2, -1, -4 });
+            //var result = LetterCombinations("239");
+            //RemoveNthFromEnd(ListNode.Example1, 1);
+            var list = GenerateParenthesis(3);
+        }
+        //22. Generate Parentheses
+        public List<String> GenerateParenthesis(int n)
+        {
+            List<String> list = new();
+            backtrack(list, "", 0, 0, n);
+            return list;
         }
 
+        public void backtrack(List<String> list, String str, int open, int close, int max)
+        {
+
+            if (str.Length == max * 2)
+            {
+                list.Add(str);
+                return;
+            }
+
+            if (open < max)
+                backtrack(list, str + "(", open + 1, close, max);
+            if (close < open)
+                backtrack(list, str + ")", open, close + 1, max);
+        }
+        //19. Remove Nth Node From End of List
+        //Two Pointers 100 23
+        public ListNode RemoveNthFromEnd2(ListNode head, int n)
+        {
+
+            var fast = head;
+            var slow = head;
+            for (int i = 0; i < n; i++)
+            {
+                fast = fast.next;
+                if (fast == null)
+                {
+                    return head.next;
+                }
+            }
+            while (fast.next != null)
+            {
+                slow = slow.next;
+                fast = fast.next;
+            }
+            slow.next = slow.next.next;
+
+            return head;
+
+        }
+        // 90 72
+        public ListNode RemoveNthFromEnd(ListNode head, int n)
+        {
+            var count = 0;
+            var temp1 = head;
+            var temp2 = head;
+            while (temp1 != null)
+            {
+                count++;
+                temp1 = temp1.next;
+            }
+            if (count == n)
+            {
+                return head.next;
+            }
+            for (int i = 0; i < count; i++)
+            {
+                if (i == count - n - 1)
+                {
+                    temp2.next = temp2.next.next;
+                    break;
+                }
+                temp2 = temp2.next;
+            }
+            return head;
+        }
+        //17. Letter Combinations of a Phone Number
+        //Dictionary, swap 61 92
+        public IList<string> LetterCombinations2(string digits)
+        {
+            Dictionary<char, string> dic = new() {
+                {'0', ""},
+                {'1', ""},
+                {'2', "abc" },
+                {'3', "def" },
+                {'4', "ghi" },
+                {'5', "jkl" },
+                {'6', "mno" },
+                {'7', "pqrs" },
+                {'8', "tuv" },
+                {'9', "wxyz" },
+            };
+            List<string> result = new();
+            if (string.IsNullOrEmpty(digits))
+            {
+                return result;
+            }
+            result.Add("");
+            foreach (var d in digits)
+            {
+                List<string> temp = new();
+                foreach (var item in dic[d])
+                {
+                    foreach (var r in result)
+                    {
+                        temp.Add(r + item);
+                    }
+                }
+                result = temp;
+            }
+            return result;
+        }
+
+        //Queue 9 52
+        public IList<string> LetterCombinations(string digits)
+        {
+            if (digits.Length == 0)
+            {
+                return new List<string>();
+            }
+            string[] array1 = new string[10] { "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+            Queue<string> queue = new Queue<string>();
+            queue.Enqueue("");
+            for (int i = 0; i < digits.Length; i++)
+            {
+                var value = array1[digits[i] - '0'];
+                while (queue.Peek().Length == i)
+                {
+                    var temp = queue.Dequeue();
+                    foreach (var v in value)
+                    {
+                        queue.Enqueue(temp + v);
+                    }
+
+                }
+            }
+
+            return queue.ToList();
+        }
         //15. 3Sum
         // 70 78
         public IList<IList<int>> ThreeSum(int[] nums)
