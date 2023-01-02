@@ -25,7 +25,6 @@ namespace Top_100_Liked_Questions
         public int Search(int[] nums, int target)
         {
             var rotateTimes = FindRotateTimes(nums);
-            var sortedArray = SortNums(nums, rotateTimes);
             var index = BinarySearch(sortedArray, target);
             return (index + nums.Length - rotateTimes) % nums.Length;
 
@@ -52,22 +51,14 @@ namespace Top_100_Liked_Questions
                 return nums.Length - right - 1;
             }
 
-            int[] SortNums(int[] nums, int rotateTimes)
-            {
-                var temp = nums.TakeLast(rotateTimes);
-                var result = temp.Union(nums);
-                return result.Take(nums.Length).ToArray();
-            }
-
             int BinarySearch(int[] nums, int target)
             {
                 int left = 0;
                 int right = nums.Length - 1;
-                int mid;
 
                 while (left <= right)
                 {
-                    mid = (left + right) / 2;
+                    int mid = (left + right) / 2;
                     if (nums[mid] == target)
                     {
                         return mid;
