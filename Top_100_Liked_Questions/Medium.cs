@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Immutable;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 using ClassLibrary1.DataStructure;
@@ -15,9 +17,197 @@ namespace Top_100_Liked_Questions
             //ThreeSum(new int[] { -1, 0, 1, 2, -1, -4 });
             //var result = LetterCombinations("239");
             //RemoveNthFromEnd(ListNode.Example1, 1);
-            var list = GenerateParenthesis(3);
+            //var list = GenerateParenthesis(5);
+            //NextPermutation(new int[] { 1, 2, 4, 6, 5, 3 });
+            var res = Search(new int[] { 4, 5, 6, 7, 0, 1, 2 }, 0);
         }
+        //33. Search in Rotated Sorted Array
+        public int Search(int[] nums, int target)
+        {
+            var rotateTimes = FindRotateTimes(nums);
+            var sortedArray = SortNums(nums, rotateTimes);
+            var index = BinarySearch(sortedArray, target);
+            return (index + nums.Length - rotateTimes) % nums.Length;
+
+            int FindRotateTimes(int[] nums)
+            {
+                int lastElement = nums[nums.Length - 1];
+                int left = 0;
+                int right = nums.Length - 1;
+                int mid;
+
+                while (left <= right)
+                {
+                    mid = (left + right) / 2;
+                    if (nums[mid] < lastElement)
+                    {
+                        right = mid - 1;
+                    }
+                    else if (nums[mid] > lastElement)
+                    {
+                        left = mid + 1;
+                    }
+                }
+
+                return nums.Length - right - 1;
+            }
+
+            int[] SortNums(int[] nums, int rotateTimes)
+            {
+                var temp = nums.TakeLast(rotateTimes);
+                var result = temp.Union(nums);
+                return result.Take(nums.Length).ToArray();
+            }
+
+            int BinarySearch(int[] nums, int target)
+            {
+                int left = 0;
+                int right = nums.Length - 1;
+                int mid;
+
+                while (left <= right)
+                {
+                    mid = (left + right) / 2;
+                    if (nums[mid] == target)
+                    {
+                        return mid;
+                    }
+                    else if (nums[mid] > target)
+                    {
+                        right = mid - 1;
+                    }
+                    else
+                    {
+                        left = left + 1;
+                    }
+
+                }
+
+                return -1;
+            }
+        }
+
+        //31. Next Permutation
+        //99 10
+        public void NextPermutation(int[] nums)
+        {
+            int lastIndex = nums.Length - 1;
+            int firstIndex = 0;
+            for (int i = nums.Length - 1; i > 0; i--)
+            {
+                if (nums[i] > nums[i - 1])
+                {
+                    for (int j = nums.Length - 1; j >= i; j--)
+                    {
+                        if (nums[j] > nums[i - 1])
+                        {
+                            Swap(j, i - 1);
+                            break;
+                        }
+                    }
+                    firstIndex = i;
+                    break;
+                }
+            }
+            while (firstIndex < lastIndex)
+            {
+                Swap(firstIndex, lastIndex);
+                firstIndex++;
+                lastIndex--;
+            }
+
+            void Swap(int index1, int index2)
+            {
+                int temp = nums[index1];
+                nums[index1] = nums[index2];
+                nums[index2] = temp;
+            }
+        }
+
+
+        //24. Swap Nodes in Pairs
+        // 80 19
+        public ListNode SwapPairs(ListNode head)
+        {
+            if (head == null || head.next == null)
+            {
+                return head;
+            }
+
+            var first = new ListNode(0, head);
+            var result = first;
+
+            while (first != null && first.next != null && first.next.next != null)
+            {
+                Swap(first);
+                first = first.next.next;
+            }
+
+            return result.next;
+        }
+
+        void Swap(ListNode first)
+        {
+            var two = first.next;
+            var three = two.next;
+            var four = three.next;
+
+            first.next = three;
+            three.next = two;
+            two.next = four;
+        }
+
         //22. Generate Parentheses
+        //brute force, recrusion
+        public List<String> GenerateParenthesis1(int n)
+        {
+            List<String> result = new();
+            GenerateAll(new char[2 * n], 0, result);
+            return result;
+        }
+
+        void GenerateAll(char[] current, int pos, List<String> result)
+        {
+            if (pos == current.Length)
+            {
+                if (IsValid(current))
+                {
+                    result.Add(new String(current));
+                }
+            }
+            else
+            {
+                current[pos] = '(';
+                GenerateAll(current, pos + 1, result);
+                current[pos] = ')';
+                GenerateAll(current, pos + 1, result);
+            }
+        }
+
+        bool IsValid(char[] current)
+        {
+            int balance = 0;
+            foreach (var c in current)
+            {
+                if (c == '(')
+                {
+                    balance++;
+                }
+                else
+                {
+                    balance--;
+                }
+                if (balance < 0)
+                {
+                    return false;
+                }
+            }
+
+            return balance == 0;
+
+        }
+
+        //backtrack 88 38
         public List<String> GenerateParenthesis(int n)
         {
             List<String> list = new();
@@ -27,7 +217,6 @@ namespace Top_100_Liked_Questions
 
         public void backtrack(List<String> list, String str, int open, int close, int max)
         {
-
             if (str.Length == max * 2)
             {
                 list.Add(str);
